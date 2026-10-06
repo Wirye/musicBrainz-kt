@@ -3,7 +3,7 @@
 Kotlin-библиотека для работы с API MusicBrainz.
 (Обновляется по мере развития моего приложения Garden, если тут чего-то нету, то оно скоро будет)
 
-Чтобы начать работу создайте MusicBrainzClient(), в нём находятся все функции, например для поиска исполнителей - MusicBrainzClient().search.auth.searchArtists(query, limit) и так далее
+Чтобы начать работу создайте MusicBrainzClient(), в нём находятся все функции, например для поиска исполнителей - MusicBrainzClient().search.searchArtists(query, limit) и так далее
 
 ВАЖНО: При создании клиента библиотеки, обязательно указывать осмысленный User-Agent, это требование самого api MusicBrainz!!!
 
