@@ -21,3 +21,19 @@ val ReleaseGroup.coverArtUrl: String
 
 val Release.coverArtUrl: String
     get() = "https://coverartarchive.org/release/$id/front"
+
+val List<ArtistCreditObject>.artistNames: List<ArtistSummary>
+    get() = this.mapNotNull {
+        if (it.name != null || it.artist.name != null) {
+            ArtistSummary(it.artist.id, it.name ?: it.artist.name.orEmpty())
+        } else null
+    }
+
+fun extractDeezerArtistId(relations: List<MbRelation>?): String? {
+    val deezerUrl = relations
+        ?.filter { it.targetType == "url" }
+        ?.mapNotNull { it.url?.resource }
+        ?.firstOrNull { "deezer.com/artist" in it } ?: return null
+
+    return deezerUrl.substringAfterLast("/").substringBefore("?")
+}

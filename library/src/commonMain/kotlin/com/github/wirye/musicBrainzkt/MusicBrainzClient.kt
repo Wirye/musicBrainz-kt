@@ -1,5 +1,6 @@
 package com.github.wirye.musicBrainzkt
 
+import com.github.wirye.musicBrainzkt.api.ArtApi
 import com.github.wirye.musicBrainzkt.api.BrowseApi
 import com.github.wirye.musicBrainzkt.api.LookupApi
 import com.github.wirye.musicBrainzkt.api.SearchApi
@@ -45,4 +46,5 @@ class MusicBrainzClient(
     val search: SearchApi = SearchApi(httpClient)
     val lookup: LookupApi = LookupApi(httpClient)
     val browse: BrowseApi = BrowseApi(httpClient)
+    val art: ArtApi = ArtApi(httpClient)
 }

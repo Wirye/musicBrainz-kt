@@ -42,3 +42,9 @@ data class ArtistCreditObject(
     val joinphrase: String? = null,
     val artist: Artist,
 )
+
+@Serializable
+data class ArtistSummary(
+    val id: String,
+    val name: String
+)

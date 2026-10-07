@@ -1,10 +1,13 @@
-# musicBrainz-kt
+This is a Kotlin Multiplatform project targeting Server.
 
-Kotlin-библиотека для работы с API MusicBrainz.
-(Обновляется по мере развития моего приложения Garden, если тут чего-то нету, то оно скоро будет)
+* [/server](./server/src/main/kotlin) is for the Ktor server application.
 
-Чтобы начать работу создайте MusicBrainzClient(), в нём находятся все функции, например для поиска исполнителей - MusicBrainzClient().search.searchArtists(query, limit) и так далее
+### Running the apps
 
-ВАЖНО: При создании клиента библиотеки, обязательно указывать осмысленный User-Agent, это требование самого api MusicBrainz!!!
+Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
 
-ОЧЕНЬ ВАЖНО: В httpClient указывайте json → ignoreUnknownKeys = true
+- Server: `./gradlew :server:run`
+
+---
+
+Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…

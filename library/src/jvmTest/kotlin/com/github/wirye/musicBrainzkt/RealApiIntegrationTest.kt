@@ -12,6 +12,9 @@ import com.github.wirye.musicBrainzkt.model.ReleaseGroupInclude
 import com.github.wirye.musicBrainzkt.model.ReleaseInclude
 import com.github.wirye.musicBrainzkt.model.SeriesInclude
 import com.github.wirye.musicBrainzkt.model.WorkInclude
+import com.github.wirye.musicBrainzkt.model.artistNames
+import com.github.wirye.musicBrainzkt.model.coverArtUrl
+import com.github.wirye.musicBrainzkt.model.extractDeezerArtistId
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -159,7 +162,12 @@ class RealApiIntegrationTest {
         )
 
         println(">>> Result isSuccess: ${result.isSuccess}")
-        println(">>> Result: $result")
+        println(">>> Result:  ${
+            if (result.getOrNull() != null) {
+                result.getOrNull()!!.artistCredit?.artistNames
+            } else {
+            }
+        }  $result")
         println(">>> Exception type: ${result.exceptionOrNull()?.javaClass?.simpleName}")
         println(">>> Exception message: ${result.exceptionOrNull()?.message}")
 
@@ -173,7 +181,12 @@ class RealApiIntegrationTest {
             include = ReleaseInclude.entries.toSet()
         )
 
-        println(">>> Result isSuccess: ${result.isSuccess}")
+        println(">>> Result isSuccess: ${
+            if (result.getOrNull() != null) {
+                result.getOrNull()!!.coverArtUrl
+            } else {
+            }
+        }  ${result.isSuccess}")
         println(">>> Result: $result")
         println(">>> Exception type: ${result.exceptionOrNull()?.javaClass?.simpleName}")
         println(">>> Exception message: ${result.exceptionOrNull()?.message}")
@@ -204,7 +217,12 @@ class RealApiIntegrationTest {
         )
 
         println(">>> Result isSuccess: ${result.isSuccess}")
-        println(">>> Result: $result")
+        println(">>> Result: ${
+            if (result.getOrNull() != null) {
+                extractDeezerArtistId(result.getOrNull()!!.relations)
+            } else {
+            }
+        } $result")
         println(">>> Exception type: ${result.exceptionOrNull()?.javaClass?.simpleName}")
         println(">>> Exception message: ${result.exceptionOrNull()?.message}")
 
@@ -710,6 +728,18 @@ class RealApiIntegrationTest {
     @Test
     fun `get events by event test`(): Unit = runTest {
         val result = client.browse.getEventsByEvent("f6ede675-887d-41a8-9468-2af872f67ecf", offset = 0, limit = 5, include = EventInclude.entries.toSet())
+
+        println(">>> Result isSuccess: ${result.isSuccess}")
+        println(">>> Result: $result")
+        println(">>> Exception type: ${result.exceptionOrNull()?.javaClass?.simpleName}")
+        println(">>> Exception message: ${result.exceptionOrNull()?.message}")
+
+        assertTrue(result.isSuccess)
+    }
+
+    @Test
+    fun `get artist art by id test`(): Unit = runTest {
+        val result = client.art.getArtistAvatar(artistName = "Natori", deezerId = "59871352")
 
         println(">>> Result isSuccess: ${result.isSuccess}")
         println(">>> Result: $result")
