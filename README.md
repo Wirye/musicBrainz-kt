@@ -37,7 +37,7 @@ client.search.searchArtists("natori", limit = 5)
 - `client.search` - поиск (исполнители, релизы, записи и т. д.)
 - `client.lookup` - данные по MBID
 - `client.browse` - списки связанных сущностей (например, релизы исполнителя)
-- `client.art` - обложки (Deezer)
+- `client.art` - аватарки исполнителей (Deezer)
 
 ## Ошибки
 
