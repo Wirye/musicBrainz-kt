@@ -20,7 +20,7 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class RealApiIntegrationTest {
-    private val client = MusicBrainzClient()
+    private val client = MusicBrainzClient("MusicBrainzKtLibary/1.1.4 ( https://github.com/Wirye/musicBrainz-kt )")
 
     @Test
     fun `area search test`(): Unit = runTest {

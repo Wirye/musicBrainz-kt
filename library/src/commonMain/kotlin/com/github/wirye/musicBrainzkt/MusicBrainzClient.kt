@@ -5,6 +5,7 @@ import com.github.wirye.musicBrainzkt.api.BrowseApi
 import com.github.wirye.musicBrainzkt.api.LookupApi
 import com.github.wirye.musicBrainzkt.api.SearchApi
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
@@ -16,7 +17,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.TimeSource
 
 internal object MusicBrainzRateLimiter {
-    private val minInterval = 5000.milliseconds
+    private val minInterval = 1500.milliseconds
     private val mutex = Mutex()
     private var nextSlot = TimeSource.Monotonic.markNow()
 
@@ -27,24 +28,34 @@ internal object MusicBrainzRateLimiter {
     }
 }
 
+/**
+ * @param userAgent a string in the format "MyApp/1.0 ( me@example.com )": app name, version, and contact.
+ * Required for MusicBrainz. If you provide your own [customHttpClient], you do not need to set the User-Agent in it:
+ * the library will add this one.
+ */
 class MusicBrainzClient(
-    customHttpClient: HttpClient? = null
+    userAgent: String,
+    customHttpClient: HttpClient? = null,
 ) {
-    private val httpClient: HttpClient = customHttpClient ?: HttpClient {
-        install(UserAgent) {
-            agent =
-                "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36"
-        }
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            })
-        }
+    init {
+        require(userAgent.isNotBlank()) { "User-Agent is required for MusicBrainz API" }
     }
 
-    val search: SearchApi = SearchApi(httpClient)
-    val lookup: LookupApi = LookupApi(httpClient)
-    val browse: BrowseApi = BrowseApi(httpClient)
-    val art: ArtApi = ArtApi(httpClient)
+    private val httpClient: HttpClient = run {
+        val setup: HttpClientConfig<*>.() -> Unit = {
+            install(UserAgent) { agent = userAgent }
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                    isLenient = true
+                })
+            }
+        }
+        customHttpClient?.config(setup) ?: HttpClient(setup)
+    }
+
+    val search = SearchApi(httpClient)
+    val lookup = LookupApi(httpClient)
+    val browse = BrowseApi(httpClient)
+    val art = ArtApi(httpClient)
 }
